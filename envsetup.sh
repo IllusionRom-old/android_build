@@ -14,6 +14,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - resgrep: Greps on all local res/*.xml files.
 - godir:   Go to the directory containing a file.
 - pushboot:Push a file from your OUT dir to your phone and reboots it, using absolute path.
+- mka:      Builds using SCHED_BATCH on all processors.
 
 Look at the source to view more functions. The complete list is:
 EOF
@@ -59,12 +60,12 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "^custom_") ; then
-       CUSTOM_BUILD=$(echo -n $1 | sed -e 's/^custom_//g')
+    if (echo -n $1 | grep -q -e "^illusion_") ; then
+       ILLUSION_BUILD=$(echo -n $1 | sed -e 's/^illusion_//g')
     else
-       CUSTOM_BUILD=
+       ILLUSION_BUILD=
     fi
-    export CUSTOM_BUILD
+    export ILLUSION_BUILD
 
     CALLED_FROM_SETUP=true BUILD_SYSTEM=build/core \
         TARGET_PRODUCT=$1 \
@@ -435,10 +436,6 @@ function add_lunch_combo()
 }
 
 # add the default one here
-add_lunch_combo aosp_arm-eng
-add_lunch_combo aosp_x86-eng
-add_lunch_combo aosp_mips-eng
-add_lunch_combo vbox_x86-eng
 
 function print_lunch_menu()
 {
@@ -463,7 +460,7 @@ function brunch()
 {
     breakfast $*
     if [ $? -eq 0 ]; then
-        time mka bacon
+        time mka illusion
     else
         echo "No such item in brunch menu. Try 'breakfast'"
         return 1
@@ -477,7 +474,7 @@ function breakfast()
     CUSTOM_DEVICES_ONLY="true"
     unset LUNCH_MENU_CHOICES
     add_lunch_combo full-eng
-    for f in `/bin/ls vendor/custom/vendorsetup.sh 2> /dev/null`
+    for f in `/bin/ls vendor/illusion/vendorsetup.sh 2> /dev/null`
         do
             echo "including $f"
             . $f
@@ -494,7 +491,7 @@ function breakfast()
             lunch $target
         else
             # This is probably just the custom model name
-            lunch custom_$target-userdebug
+            lunch illusion_$target-userdebug
         fi
     fi
     return $?
