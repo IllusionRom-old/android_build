@@ -169,6 +169,7 @@ $(INSTALLED_BUILD_PROP_TARGET): $(BUILDINFO_SH) $(INTERNAL_BUILD_ID_MAKEFILE) $(
 	@mkdir -p $(dir $@)
 	$(hide) TARGET_BUILD_TYPE="$(TARGET_BUILD_VARIANT)" \
 			TARGET_DEVICE="$(TARGET_DEVICE)" \
+			ILLUSION_DEVICE="$(TARGET_DEVICE)" \
 			PRODUCT_NAME="$(TARGET_PRODUCT)" \
 			PRODUCT_BRAND="$(PRODUCT_BRAND)" \
 			PRODUCT_DEFAULT_LANGUAGE="$(call default-locale-language,$(PRODUCT_LOCALES))" \
@@ -1132,6 +1133,7 @@ endif
 # host tools needed to build dist and OTA packages
 
 DISTTOOLS :=  $(HOST_OUT_EXECUTABLES)/minigzip \
+          $(HOST_OUT_EXECUTABLES)/adb \
 	  $(HOST_OUT_EXECUTABLES)/mkbootfs \
 	  $(HOST_OUT_EXECUTABLES)/mkbootimg \
 	  $(HOST_OUT_EXECUTABLES)/fs_config \
@@ -1356,9 +1358,10 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 
 CUSTOM_TARGET_PACKAGE := $(PRODUCT_OUT)/custom-$(ROM_VERSION).zip
 
-.PHONY: otapackage bacon
+.PHONY: otapackage bacon illusion
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
+illusion: otapackage
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CUSTOM_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(CUSTOM_TARGET_PACKAGE) > $(CUSTOM_TARGET_PACKAGE).md5sum
 	@echo -e "Package complete: $(CM_TARGET_PACKAGE)"
