@@ -2,7 +2,7 @@ function hmm() {
 cat <<EOF
 Invoke ". build/envsetup.sh" from your shell to add the following functions to your environment:
 - lunch:   lunch <product_name>-<build_variant>
-- tapas:   tapas [<App1> <App2> ...] [arm|x86|mips|armv5] [eng|userdebug|user]
+- tapas:   tapas [<App1> <App2> ...] [arm|x86|mips|armv5] [eng|userdebug|user|slim]
 - croot:   Changes directory to the top of the tree.
 - m:       Makes from the top of the tree.
 - mm:      Builds all of the modules in the current directory, but not their dependencies.
@@ -76,7 +76,7 @@ function check_product()
     # hide successful answers, but allow the errors to show
 }
 
-VARIANT_CHOICES=(user userdebug eng)
+VARIANT_CHOICES=(user userdebug eng slim)
 
 # check to see if the supplied variant is valid
 function check_variant()
@@ -590,7 +590,7 @@ complete -F _lunch lunch
 function tapas()
 {
     local arch=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(arm|x86|mips|armv5)$'))
-    local variant=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(user|userdebug|eng)$'))
+    local variant=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(user|userdebug|eng|slim)$'))
     local apps=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E -v '^(user|userdebug|eng|arm|x86|mips|armv5)$'))
 
     if [ $(echo $arch | wc -w) -gt 1 ]; then

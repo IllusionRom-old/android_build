@@ -808,8 +808,8 @@ INTERNAL_SYSTEMIMAGE_FILES := $(filter $(TARGET_OUT)/%, \
 
 ifdef is_tests_build
 # We don't want to install tests modules to the system partition
-# when building "tests", because now "tests" may be built in a user, userdebug
-# or eng build variant and we don't want to pollute the system partition.
+# when building "tests", because now "tests" may be built in a user, userdebug,
+# eng, or slim build variant and we don't want to pollute the system partition.
 # INTERNAL_SYSTEMIMAGE_FILES += $(filter $(TARGET_OUT)/%, \
 #    $(tests_MODULES))
 endif

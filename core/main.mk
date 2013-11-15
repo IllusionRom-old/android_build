@@ -240,10 +240,10 @@ include $(BUILD_SYSTEM)/definitions.mk
 # Bring in dex_preopt.mk
 include $(BUILD_SYSTEM)/dex_preopt.mk
 
-ifneq ($(filter user userdebug eng,$(MAKECMDGOALS)),)
+ifneq ($(filter user userdebug eng slim,$(MAKECMDGOALS)),)
 $(info ***************************************************************)
 $(info ***************************************************************)
-$(info Do not pass '$(filter user userdebug eng,$(MAKECMDGOALS))' on \
+$(info Do not pass '$(filter user userdebug eng slim,$(MAKECMDGOALS))' on \
        the make command line.)
 $(info Set TARGET_BUILD_VARIANT in buildspec.mk, or use lunch or)
 $(info choosecombo.)
@@ -349,6 +349,31 @@ ifneq ($(filter ro.setupwizard.mode=ENABLED, $(call collapse-pairs, $(ADDITIONAL
           $(call collapse-pairs, $(ADDITIONAL_BUILD_PROPERTIES))) \
           ro.setupwizard.mode=OPTIONAL
 endif
+endif
+
+## slim ##
+
+ifeq ($TARGET_BUILD_VARIANT),slim)
+enable_target_debugging := true
+
+# Pick up some extra useful tools
+tags_to_install += debug eng
+
+# Enable Dalvik lock contention logging for userdebug builds.
+ADDITIONAL_BUILD_PROPERTIES += dalvik.vm.lockprof.threshold=500
+
+# Turn on Dalvik preoptimization for slim builds, but only if not
+# explicitly disabled and the build is running on Linux (since host
+# Dalvik isn't built for non-Linux hosts).
+ifneq (true,$(DISABLE_DEXPREOPT))
+  ifeq ($(user_variant),user)
+    ifeq ($(HOST_OS),linux)
+      WITH_DEXPREOPT := true
+    endif
+  endif
+endif
+
+ADDITIONAL_DEFAULT_PROPERTIES += ro.debuggable=1
 endif
 
 ## sdk ##
