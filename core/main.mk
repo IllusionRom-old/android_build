@@ -240,10 +240,10 @@ include $(BUILD_SYSTEM)/definitions.mk
 # Bring in dex_preopt.mk
 include $(BUILD_SYSTEM)/dex_preopt.mk
 
-ifneq ($(filter user userdebug eng slim,$(MAKECMDGOALS)),)
+ifneq ($(filter user userdebug eng illusion,$(MAKECMDGOALS)),)
 $(info ***************************************************************)
 $(info ***************************************************************)
-$(info Do not pass '$(filter user userdebug eng slim,$(MAKECMDGOALS))' on \
+$(info Do not pass '$(filter user userdebug eng illusion,$(MAKECMDGOALS))' on \
        the make command line.)
 $(info Set TARGET_BUILD_VARIANT in buildspec.mk, or use lunch or)
 $(info choosecombo.)
@@ -351,9 +351,9 @@ ifneq ($(filter ro.setupwizard.mode=ENABLED, $(call collapse-pairs, $(ADDITIONAL
 endif
 endif
 
-## slim ##
+## illusion ##
 
-ifeq ($TARGET_BUILD_VARIANT),slim)
+ifeq ($TARGET_BUILD_VARIANT),illusion)
 enable_target_debugging := true
 
 # Pick up some extra useful tools
