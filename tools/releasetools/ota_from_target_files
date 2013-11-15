@@ -429,11 +429,27 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   if "selinux_fc" in OPTIONS.info_dict:
     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
+    
+  script.Print("*******************************************")
+  script.Print("*                                         *")
+  script.Print("*                                         *")
+  script.Print("*        >>INSTALLING ILLUSION<<    *")
+  script.Print("*                                         *")
+  script.Print("*                                         *")
+  script.Print("*******************************************")
 
   script.FormatPartition("/system")
   script.Mount("/system")
   script.UnpackPackageDir("recovery", "/system")
   script.UnpackPackageDir("system", "/system")
+  
+  script.Print("*******************************************")
+  script.Print("*                                         *")
+  script.Print("*                                         *")
+  script.Print("*      >>SYMLINKS & PERMISSIONS<<   *")
+  script.Print("*                                         *")
+  script.Print("*                                         *")
+  script.Print("*******************************************")
 
   symlinks = CopySystemFiles(input_zip, output_zip)
   script.MakeSymlinks(symlinks)
@@ -446,6 +462,14 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   Item.GetMetadata(input_zip)
   Item.Get("system").SetPermissions(script)
+  
+  script.Print("*******************************************")
+  script.Print("*                                         *")
+  script.Print("*                                         *")
+  script.Print("*          >>FLASHING KERNEL<<      *")
+  script.Print("*                                         *")
+  script.Print("*                                         *")
+  script.Print("*******************************************")
 
   common.CheckSize(boot_img.data, "boot.img", OPTIONS.info_dict)
   common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
