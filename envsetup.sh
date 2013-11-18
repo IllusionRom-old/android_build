@@ -436,6 +436,7 @@ function add_lunch_combo()
 }
 
 # add the default one here
+add_lunch_combo full-eng
 
 function print_lunch_menu()
 {
