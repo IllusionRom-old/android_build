@@ -68,46 +68,16 @@ endif
 
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-TARGET_arm_CFLAGS :=    -O3 \
+TARGET_arm_CFLAGS :=    -O2 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
-                        -funroll-loops \
-                        -ftree-loop-distribution \
-                        -ftree-loop-linear \
-                        -ftree-vectorize \
-                        -Wstrict-aliasing=2 \
-                        -pipe
+                        -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
-ifeq ($(TARGET_USE_O3),true)
-    TARGET_thumb_CFLAGS := -mthumb \
-                        -O3 \
+TARGET_thumb_CFLAGS :=  -mthumb \
+                        -Os \
                         -fomit-frame-pointer \
-                        -fstrict-aliasing \
-                        -funsafe-math-optimizations \
-                        -Wstrict-aliasing=2 \
-                        -fno-strict-aliasing \
-                        -funroll-loops \
-                        -pipe
-else
-    TARGET_thumb_CFLAGS :=  -mthumb \
-                            -Os \
-                            -fomit-frame-pointer \
-                            -fstrict-aliasing \
-                            -funsafe-math-optimizations \
-                            -Wstrict-aliasing=2 \
-                            -fno-strict-aliasing \
-                            -funroll-loops \
-                            -pipe
-endif
-
-TARGET_arm_CFLAGS +=    -Wno-unused-parameter \
-                        -Wno-unused-value \
-                        -Wno-unused-function
-
-TARGET_thumb_CFLAGS +=  -Wno-unused-parameter \
-                        -Wno-unused-value \
-                        -Wno-unused-function
+                        -fno-strict-aliasing
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
