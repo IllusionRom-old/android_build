@@ -1356,14 +1356,14 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   --backup=$(backuptool) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-CUSTOM_TARGET_PACKAGE := $(PRODUCT_OUT)/custom-$(ROM_VERSION).zip
+ILLUSION_TARGET_PACKAGE := $(PRODUCT_OUT)/illusion-$(ROM_VERSION).zip
 
 .PHONY: otapackage bacon illusion
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
 illusion: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CUSTOM_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(CUSTOM_TARGET_PACKAGE) > $(CUSTOM_TARGET_PACKAGE).md5sum
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(ILLUSION_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(ILLUSION_TARGET_PACKAGE) > $(ILLUSION_TARGET_PACKAGE).md5sum
 	@echo -e "Package complete: $(CM_TARGET_PACKAGE)"
 
 # -----------------------------------------------------------------
